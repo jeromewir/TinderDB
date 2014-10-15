@@ -7,6 +7,12 @@ Requirement
 -----
 - Mongodb
 
+Usage
+-----
+``
+$ node tinderjs.js
+``
+
 Pages
 -----
 ###/
