@@ -1,22 +1,23 @@
 {
   "name": "TinderDB",
-  "version": "0.0.0",
-  "description": "No description yet",
+  "version": "0.1",
+  "description": "TinderDB is a enhanced bot liking for Tinder with the ability to save person's informations",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/jeromewir/TinderDB.git"
+  }
   "author": "wirszt_j",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.0.1",
-    "bytes": "^1.0.0",
-    "depd": "^1.0.0",
     "express": "^4.9.7",
     "jade": "^1.7.0",
     "mongoose": "^3.8.17",
     "request": "^2.45.0",
-    "sleep": "^1.1.8",
     "socket.io": "^1.1.0",
     "tinderjs": "^1.0.7",
     "underscore": "^1.7.0"
