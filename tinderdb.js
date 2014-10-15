@@ -50,14 +50,14 @@ var TinderUser = mongoose.model('TinderUser', {
 });
 
 /* App Id */
-FBClientId = '715063671881288';
+FBClientId = '';
 /* App Secret */
-FBClientSecret = '5ce54a2e4883f520ca030b1f2cd484be';
+FBClientSecret = '';
 /* Tinder token
  * Get it here before redirect : 
  https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
  */
-tinderToken = 'CAAGm0PX4ZCpsBADtxZBR5v8NZBNZBt6xuenZC9ZC1aGIlqg9Kld4ZAtbTQjsI40cU3GdQ44taIF4IoVsnUqFmn22cuSSgTtLlK4u4lPaPlV1CwxNeytg2v4uZBiNXSpsZCcIe2YP3AnOrMkJ8FBjiLvLd2fxjGtCFbR3ZBG033BSDkV0gkABg4oC9lSeLxBcciMKgVimHxBUi9imeDqnRKNXolGc8dgeppzwcZD';
+tinderToken = '';
 
 app.get('/', function(req, res) {
 	var skip = 0;
@@ -99,6 +99,10 @@ app.post('/token', function(req, res) {
         	}
 
         	console.log(getDate() + "Authenticate with TinderAPI");
+        	if (tinderToken == '') {
+        		console.log('You need to provide tinderToken, see code for more info');
+        		res.end('You need to provide tinderToken, see code for more info');
+        	}
 			client.authorize(tinderToken, body.data.user_id, function() {
 				if (err) {
 					console.error(getDate() + "Authentification failure");
