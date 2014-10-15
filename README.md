@@ -9,9 +9,9 @@ Requirement
 
 Usage
 -----
-``
+```
 $ node tinderjs.js
-``
+```
 
 Pages
 -----
