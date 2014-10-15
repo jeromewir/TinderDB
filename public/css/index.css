@@ -1,0 +1,39 @@
+.persons {
+	padding-top: 50px;
+}
+
+.personsContainer {
+	text-align: center;
+}
+
+#menu {
+	height: 50px;
+	width: 100%;
+	background: black;
+	position: fixed;
+	top: 0;
+}
+
+#nbLikes {
+	position: relative;
+	top: 15px;
+	right: 0;
+	float: right;
+	color: white;
+	margin-right: 20px;
+	bottom: 20px;
+}
+
+.paginationContainer {
+	text-align: center;
+}
+
+.pagination {
+		max-width: 90%;
+
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	display: inline-block;
+	clear: both;
+}

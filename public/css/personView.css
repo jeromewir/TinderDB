@@ -1,0 +1,26 @@
+.onePerson {
+	border-radius: 6px;
+	text-align: center;
+	margin: 10px;
+	display: inline-block;
+	vertical-align: middle;
+	background-color: #eee;
+}
+
+.profilePicture {
+	width: 280px;
+	height: 300px;
+	margin: 10px;
+}
+
+#informations {
+	text-align: center;
+}
+
+.no {
+	color: #e74c3c;
+}
+
+.yes {
+	color: #2ecc71;
+}

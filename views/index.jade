@@ -1,0 +1,52 @@
+
+script.
+	function _calculateAge(birthday) {
+		var ageDifMs = Date.now() - birthday.getTime();
+		var ageDate = new Date(ageDifMs);
+		return Math.abs(ageDate.getUTCFullYear() - 1970);
+	}
+
+html
+	title TinderBot
+
+	style
+		include ../public/css/personView.css
+		include ../public/css/index.css
+
+	#menu
+		#nbLikes
+			| Nombre de match : #{nbMatch}
+
+	.persons
+		.personsContainer
+			each person in persons
+				include personView
+
+	div(class="paginationContainer")
+		ul(class="pagination")
+			- for (var i = 0; i < nbPages; ++i) {
+				- myClass = i == actualPage ? 'active' : '';
+				- if (!actualPage && i == 0)
+					- myClass = 'active'
+				li(class=myClass)
+					a(href="/?page=#{i}") #{i}
+			- }
+
+script(src="https://cdn.socket.io/socket.io-1.1.0.js")
+
+link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css")
+script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+script(src="http://code.jquery.com/jquery-1.11.0.min.js")
+script(src="http://code.jquery.com/jquery-migrate-1.2.1.min.js")
+
+script.
+	var io = io();
+	io.on('newMatch', function(person) {
+		$('.onePerson').last().remove();
+		$(".personsContainer").prepend('<div class="onePerson">' + 
+			'<img src="' + person.photos[0].url + '" class="profilePicture"/>' + 
+			'<div id="informations">' + person.name + '<br/>' + 
+			'Distance: ' + person.distance + ' miles away <br/>' + 
+			'Age : ' + _calculateAge(new Date(person.birth_date)) + '<br/>' +
+			'Liked : ' + (person.liked == 1 ? "<span class='yes'>yes</span>" : "<span class='no'>no</span>") + '</div></div>');
+	});

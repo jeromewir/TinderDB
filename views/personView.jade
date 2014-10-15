@@ -1,0 +1,16 @@
+html
+	div(class="onePerson")
+		img(src='#{person.photos[0].url}', class="profilePicture", u="image")
+
+		#informations
+			| #{person.name}
+			br
+			| Distance: #{person.distance} miles away
+			br
+			| Age : 
+			script.
+				document.write(_calculateAge(new Date('#{person.birth_date}')));
+			br
+			| Liked : 
+			script.
+				'#{person.liked}' == 1 ? document.write('<span class="yes">yes</span>') : document.write('<span class="no">no</span>');
