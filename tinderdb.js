@@ -35,29 +35,29 @@ app.set('view engine', 'jade');
 var TinderUser = mongoose.model('TinderUser', {
 	distance: Number,
 	common_like_count: Number,
-  	common_friend_count: Number,
-  	common_likes: [],
+	common_friend_count: Number,
+	common_likes: [],
 	common_friends: [],
 	_id: String,
 	bio: String,
-  	birth_date: String,
-  	gender: Number,
-  	name: String,
-  	ping_time: String,
-  	photos: [],
-  	birth_date_info: String,
-  	liked: Number
+	birth_date: String,
+	gender: Number,
+	name: String,
+	ping_time: String,
+	photos: [],
+	birth_date_info: String,
+	liked: Number
 });
 
 /* App Id */
-FBClientId = '';
+FBClientId = '715063671881288';
 /* App Secret */
-FBClientSecret = '';
+FBClientSecret = '5ce54a2e4883f520ca030b1f2cd484be';
 /* Tinder token
- * Get it here before redirect : 
- https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
- */
-tinderToken = '';
+* Get it here before redirect :
+https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
+*/
+tinderToken = 'CAAGm0PX4ZCpsBAGszZBDZBqFAQtAPveoktl5cuftcmqVCqk1CuwWy3wK5McZCtE7yOAM3F7JZCzZA4gUZADwtcQHGsAmg5sHAJKvZBVUqM3qif4KbX1ZCT9K5ZAIhPOieLJZAvVJYMA9jmKryXwHTb95uof2kD3NiJb4ulQN43vbnnyfYgS9WGxZCVlsoNsRNh9MtIA2facqRZCQm4FxkBavhkHnCXcvCjNTPhhs6UpasUucG5QZDZD';
 
 app.get('/', function(req, res) {
 	var skip = 0;
@@ -79,30 +79,30 @@ app.get('/token', function(req, res) {
 
 app.post('/token', function(req, res) {
 	var hash = req.body.hash;
-    var tokenField = "access_token=";
-    var expiresField = "&expires_in=";
-    var access_token = hash.substring(hash.indexOf(tokenField) + tokenField.length, hash.indexOf(expiresField));
+	var tokenField = "access_token=";
+	var expiresField = "&expires_in=";
+	var access_token = hash.substring(hash.indexOf(tokenField) + tokenField.length, hash.indexOf(expiresField));
 
-    /* Get the id of the user */
-    request({
+	/* Get the id of the user */
+	request({
 		url: 'https://graph.facebook.com/debug_token?input_token=' + access_token + '&access_token=' + FBClientId + '|' + FBClientSecret,
-      	method: 'GET'
-    }, function(err, response, body) {  
+		method: 'GET'
+	}, function(err, response, body) {
 		if (err) {
 			throw new "Failed to get user id: " + err;
-		} 
+		}
 		else {
 			body = JSON.parse(body);
 
 			if (!body.data.user_id) {
 				throw new "Failed to get user id.";
-        	}
+			}
 
-        	console.log(getDate() + "Authenticate with TinderAPI");
-        	if (tinderToken == '') {
-        		console.log('You need to provide tinderToken, see code for more info');
-        		res.end('You need to provide tinderToken, see code for more info');
-        	}
+			console.log(getDate() + "Authenticate with TinderAPI");
+			if (tinderToken == '') {
+				console.log('You need to provide tinderToken, see code for more info');
+				res.end('You need to provide tinderToken, see code for more info');
+			}
 			client.authorize(tinderToken, body.data.user_id, function() {
 				if (err) {
 					console.error(getDate() + "Authentification failure");
@@ -113,7 +113,7 @@ app.post('/token', function(req, res) {
 					res.end(getDate() + "Authentification success");
 				}
 			});
-       	}
+		}
 	});
 });
 
@@ -124,8 +124,8 @@ app.get('/like', function(req, res) {
 		return;
 	}
 	setInterval(function() {
-			client.getRecommendations(10, getRecommentationsAndLike)
-		}, 5000);
+		client.getRecommendations(10, getRecommentationsAndLike)
+	}, 5000);
 	res.end("Liking started !");
 });
 
@@ -133,31 +133,33 @@ app.get('/update', function(req, res) {
 	client.getHistory(function(err, data) {
 		_.chain(data.matches)
 		.each(function(person) {
-			person = person.person;
-			TinderUser.find({_id: person._id}).count().exec(function(err, result) {
-				if (result == 0) {
-					var per = new TinderUser({
-					distance: person.distance_mi,
-					common_like_count: person.common_like_count,
-				  	common_friend_count: person.common_friend_count,
-				  	common_likes: person.common_likes,
-					common_friends: person.common_friends,
-					_id: person._id,
-					bio: person.bio,
-				  	birth_date: person.birth_date,
-				  	gender: person.gender,
-				  	name: person.name,
-				  	ping_time: person.ping_time,
-				  	photos: person.photos,
-				  	birth_date_info: person.birth_date_info,
-				  	liked: 1
+			if (person != undefined && person.person != undefined) {
+				person = person.person;
+				TinderUser.find({_id: person._id}).count().exec(function(err, result) {
+					if (result == 0) {
+						var per = new TinderUser({
+							distance: person.distance_mi,
+							common_like_count: person.common_like_count,
+							common_friend_count: person.common_friend_count,
+							common_likes: person.common_likes,
+							common_friends: person.common_friends,
+							_id: person._id,
+							bio: person.bio,
+							birth_date: person.birth_date,
+							gender: person.gender,
+							name: person.name,
+							ping_time: person.ping_time,
+							photos: person.photos,
+							birth_date_info: person.birth_date_info,
+							liked: 1
+						});
+						per.save();
+					}
+					else {
+						TinderUser.update({_id: person._id}, {liked: 1});
+					}
 				});
-					per.save();
-				}
-				else {
-					TinderUser.update({_id: person._id}, {liked: 1});
-				}
-			});
+			}
 		});
 		res.end("All your matched have been updated");
 	});
@@ -172,18 +174,18 @@ var getRecommentationsAndLike = function(error, data) {
 		var actual = new TinderUser({
 			distance: person.distance_mi,
 			common_like_count: person.common_like_count,
-		  	common_friend_count: person.common_friend_count,
-		  	common_likes: person.common_likes,
+			common_friend_count: person.common_friend_count,
+			common_likes: person.common_likes,
 			common_friends: person.common_friends,
 			_id: person._id,
 			bio: person.bio,
-		  	birth_date: person.birth_date,
-		  	gender: person.gender,
-		  	name: person.name,
-		  	ping_time: person.ping_time,
-		  	photos: person.photos,
-		  	birth_date_info: person.birth_date_info,
-		  	liked: 0
+			birth_date: person.birth_date,
+			gender: person.gender,
+			name: person.name,
+			ping_time: person.ping_time,
+			photos: person.photos,
+			birth_date_info: person.birth_date_info,
+			liked: 0
 		});
 		actual.save(function(err, fluffly) {
 			if (err) {
@@ -204,7 +206,7 @@ var getRecommentationsAndLike = function(error, data) {
 				updateHtmlView(actual);
 				actual.save(function(err) {
 					if (err)
-						console.log("Update failed");
+					console.log("Update failed");
 				});
 			}
 		});
@@ -216,8 +218,8 @@ var updateHtmlView = function(person) {
 };
 
 app.get('/login', function(req, res) {
-    res.redirect('https://www.facebook.com/dialog/oauth?client_id=' + FBClientId + '&response_type=token&redirect_uri=http://localhost:' + port + '/token');
-  });
+	res.redirect('https://www.facebook.com/dialog/oauth?client_id=' + FBClientId + '&response_type=token&redirect_uri=http://localhost:' + port + '/token');
+});
 
 sys.puts('Server is listening on port ' + port);
 
