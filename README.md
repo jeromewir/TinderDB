@@ -1,3 +1,5 @@
+DEPRECATED -- Tinder API has been updated since
+
 TinderDB
 ========
 
